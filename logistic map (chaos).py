@@ -42,7 +42,7 @@ def initialization():
             print("Iteration amount is "+str(iterations))
             procede=input("Enter correct if above information is correct.\n--->")
             input_correct=procede
-    vaules={"r_vaule":r_vaule,"initial_x":initial_x,"iterations":iterations}    ####do not forget to change type
+    vaules={"r_vaule":float(r_vaule),"initial_x":float(initial_x),"iterations":int(iterations)}    ####do not forget to change type
     return(vaules)
 
 
