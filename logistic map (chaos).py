@@ -116,7 +116,7 @@ def calc(arg_1):
         i=i+1
         x=calc_step(r,x)
         result[str(i)]=x
-    return(result,i)
+    return(result)
 
 
 
@@ -129,8 +129,7 @@ def calc_step(arg_1,arg_2):
 
 
 def calc_end(arg_1):
-    result=arg_1[0]
-    result=result[0]
+    result=arg_1["arg_1"]
     print("calc done")
     display=input("display?Y/N\n--->")
     while display!="Y":
@@ -152,18 +151,3 @@ def store_data():
 
 if 1==1:
     main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
