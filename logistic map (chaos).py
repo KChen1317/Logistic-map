@@ -20,9 +20,11 @@ def handle_input(arg_1,arg_2):      ####handles input
         a=initialization()          ####arguements as a dictionary into the seond arguement here
         return(a)                   ####eg {"arg1":{"arg":""a},"arg_2":var_2} into the second arguement (arg_2) 
     elif arg_1=="store data":
-        a=0
-        store_data()
+        store_data(func_arg)
         return()
+    elif arg_1=="file name get":
+        a=get_file_name()
+        return(a)
 
 
 def initialization():
@@ -138,14 +140,56 @@ def calc_end(arg_1):
     store_data=False
     store_data=input("store data?Y/N\n--->")
     if store_data=="Y":
-        handle_input("store data",0)
+        handle_input("store data",arg_1)
 
 
 
-def store_data():
-    a=a
+def store_data(arg_1):
+    results=arg_1["arg_1"]
+    variables=arg_1["arg_2"]
+    print("results "+str(results))
+    print("variables "+str(variables))
+    data={"input":variables,"results":results}
+    file_name=handle_input("file name get",0)
+    file=open(file_name,"w")
+    file.write(str(data))
+    file.close()
+    print("Data stored at "+file_name+".")
+    
 
 
+
+def get_file_name():
+    sucess=False
+    print("---Warinig---\nThis program will wipe any data in a provided file name.")
+    i=0
+    while sucess==False:
+        i+1
+        if i==3:
+            print("---Warinig---\nThis program will wipe any data in a provided file name.")
+            i=1
+        new_file=input("Do you wnat to create a new file?Y/N\n---->")
+        if new_file=="Y":
+            file_name=input("New file name?\n---->")
+            file_name=str(file_name)+".txt"
+            try:
+                file=open(file_name,"x")
+                print("File "+file_name+" created sucessfully")
+                file.close()
+                sucess=True
+            except FileExistsError:
+                print("File"+file_name+" already exists.")
+        else:
+            file_name=input("File name?\n---->")
+            file_name=str(file_name)+".txt"
+            try:
+                file=open(file_name)
+                print("File "+file_name+" found.")
+                file.close()
+                sucess=True
+            except FileNotFoundError:
+                print("File "+file_name+" not found.")
+    return(file_name)
 
 
 
