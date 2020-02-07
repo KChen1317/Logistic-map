@@ -18,12 +18,18 @@ def handle_input(arg_1,arg_2):      ####handles input
     func_arg=arg_2                  ####data input if the mode that is choesen 
     if arg_1=="data input":         ####requires/has arguements , input
         a=initialization()          ####arguements as a dictionary into the seond arguement here
-        return(a)                   ####eg {"arg1":{"arg":""a},"arg_2":var_2} into the second arguement (arg_2) 
+        return(a)                   ####eg {"arg1":{"arg":""a},"arg_2":var_2} into the second arguement (arg_2)
+    elif arg_1=="load data":
+        a=load_data()
+        return(a)
     elif arg_1=="store data":
         store_data(func_arg)
         return()
-    elif arg_1=="file name get":
-        a=get_file_name()
+    elif arg_1=="file name get load":
+        a=get_gile_name_load()      ####handles getting a file name to load
+        return(a)
+    elif arg_1=="file name get dump":
+        a=get_file_name_dump()      ####handles getting the file name to output results
         return(a)
 
 
@@ -159,7 +165,7 @@ def store_data(arg_1):
 
 
 
-def get_file_name():
+def get_file_name_dump():
     sucess=False
     print("---Warinig---\nThis program will wipe any data in a provided file name.")
     i=0
