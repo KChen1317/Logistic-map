@@ -33,8 +33,8 @@ def handle_input(arg_1,arg_2):      ####handles input
         return(a)
 
 
-def initialization():
-    input_correct=False
+def initialization():               ####handles initialization
+    input_correct=False             ####output: {"r_vaule":float(r_vaule),"initial_x":float(initial_x),"iterations":int(iterations)}
     while input_correct==False:
         vaules_correct=False
         r_vaule=input("r?\n--->")
@@ -50,12 +50,12 @@ def initialization():
             print("Iteration amount is "+str(iterations))
             procede=input("Enter correct if above information is correct.\n--->")
             input_correct=procede
-    vaules={"r_vaule":float(r_vaule),"initial_x":float(initial_x),"iterations":int(iterations)}    ####do not forget to change type
+    vaules={"r_vaule":float(r_vaule),"initial_x":float(initial_x),"iterations":int(iterations)}
     return(vaules)
 
 
 
-def check(arg_1):
+def check(arg_1):                   ####checks for the type and ranges correctness of input
     vaules=arg_1
     for key in vaules:
         if key=="int,+,!=0,float,+,!=0":
@@ -76,7 +76,7 @@ def check(arg_1):
 
 
 
-def recorrect(arg_1):
+def recorrect(arg_1):                   ####if check()==False this function will output needed corrections to console
     vaules=arg_1
     correct={}
     i=0
@@ -112,7 +112,7 @@ def recorrect(arg_1):
 
 
 
-def calc(arg_1):
+def calc(arg_1):                        ####handles iterating x
     vaules=arg_1
     r=vaules["r_vaule"]
     x0=vaules["initial_x"]
@@ -128,7 +128,7 @@ def calc(arg_1):
 
 
 
-def calc_step(arg_1,arg_2):
+def calc_step(arg_1,arg_2):             ####single step /iteration 
     r=arg_1
     x=arg_2
     x=r*x*(1-x)
@@ -136,7 +136,7 @@ def calc_step(arg_1,arg_2):
 
 
 
-def calc_end(arg_1):
+def calc_end(arg_1):                    ####output
     result=arg_1["arg_1"]
     print("calc done")
     display=input("display?Y/N\n--->")
@@ -150,7 +150,7 @@ def calc_end(arg_1):
 
 
 
-def store_data(arg_1):
+def store_data(arg_1):                  ####if one wants to dump results
     results=arg_1["arg_1"]
     variables=arg_1["arg_2"]
     print("results "+str(results))
@@ -165,7 +165,7 @@ def store_data(arg_1):
 
 
 
-def get_file_name_dump():
+def get_file_name_dump():           ####get file name
     sucess=False
     print("---Warinig---\nThis program will wipe any data in a provided file name.")
     i=0
