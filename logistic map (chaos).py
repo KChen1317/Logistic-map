@@ -8,17 +8,20 @@
 
 
 def main():
-    print()
+    
     variables=handle_input("data input",0)
     result=calc(variables)
     calc_end({"arg_1":result,"arg_2":variables})
 
 
 def handle_input(arg_1,arg_2):      ####handles input
-    func_arg=arg_2                  ####data input if the mode that is choesen 
-    if arg_1=="data input":         ####requires/has arguements , input
-        a=initialization()          ####arguements as a dictionary into the seond arguement here
-        return(a)                   ####eg {"arg1":{"arg":""a},"arg_2":var_2} into the second arguement (arg_2)
+    func_arg=arg_2                  ####data input if the mode that is chosen requires/has arguement
+    if arg_1=="start":              ####eg {"arg1":{"arg":""a},"arg_2":var_2} into the second arguement (arg_2)
+        a=start()
+        return(a)
+    elif arg_1=="data input":
+        a=initialization()
+        return(a)
     elif arg_1=="load data":
         a=load_data()
         return(a)
@@ -31,6 +34,20 @@ def handle_input(arg_1,arg_2):      ####handles input
     elif arg_1=="file name get dump":
         a=get_file_name_dump()      ####handles getting the file name to output results
         return(a)
+    
+    
+    
+def start():                        ####allows for either file loading or direct data input
+    ready=False
+    while ready==False:
+        load_file=input("Do you want to load a file?Y/N\n---->")
+        if load_file=="Y":
+            file_name=get_file_name_load()
+            
+        else:
+            a=initialization()
+    
+    
 
 
 def initialization():               ####handles initialization
@@ -161,6 +178,11 @@ def store_data(arg_1):                  ####if one wants to dump results
     file.write(str(data))
     file.close()
     print("Data stored at "+file_name+".")
+    
+    
+ 
+
+def get_file_name_load():
     
 
 
