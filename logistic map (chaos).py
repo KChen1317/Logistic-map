@@ -1,6 +1,6 @@
 ###############
 
-
+import ast
 
 
 
@@ -8,8 +8,7 @@
 
 
 def main():
-    
-    variables=handle_input("data input",0)
+    variables=handle_input("start",0)
     result=calc(variables)
     calc_end({"arg_1":result,"arg_2":variables})
 
@@ -43,11 +42,61 @@ def start():                        ####allows for either file loading or direct
         load_file=input("Do you want to load a file?Y/N\n---->")
         if load_file=="Y":
             file_name=get_file_name_load()
-            
+            file=open(file_name,"r")
+            a=file.read()
+            a=ast.literal_eval(a)
+            a=a["input"]
+            print("File initial parameters loaded.")
+            ready=True
         else:
             a=initialization()
-    
-    
+            ready=True
+            print("Inputs loaded.")
+    procede=False
+    while procede!="Y":
+        procede=input("Start caculation?Y/N\n---->")
+    print("----------------------------")
+    return(a)
+
+
+
+
+def get_file_name_load():               ####gets a file name and tests contents for validity
+    sucess=False
+    print("")
+    while sucess==False:
+        file_name=input("Name of file to load?\n---->")
+        file_name=str(file_name)+".txt"
+        try:
+            with open(file_name,"r") as file:
+                print("File "+file_name+" found.")
+                try:                    ####input may be malformed
+                    a=file.read()
+                    a=ast.literal_eval(a)
+                    try:                ####input could be another data type (not a dictionary)
+                        a=a["input"]
+                        r_vaule=a["r_vaule"]
+                        initial_x=a["initial_x"]
+                        iterations=a["iterations"]
+                        a={"1":r_vaule,"2":initial_x,"3":iterations}
+                        valid=check(a)
+                        if valid==True:
+                            sucess=True
+                            print("File parameters are as follows:")
+                            print("R vaule is "+str(r_vaule))
+                            print("Initial x vaule (eg x0) is "+str(initial_x))
+                            print("Iteration amount is "+str(iterations))
+                        else:
+                            print("Failed to import file.\nFile may be corrupted or not correct.")
+                    except:
+                        print("Failed to import file.\nFile may be corrupted or not correct.")
+                except:
+                    print("Failed to import file.\nFile may be corrupted or not correct.")
+        except FileNotFoundError:
+            print("File "+file_name+" not found.")
+    return(file_name)
+
+
 
 
 def initialization():               ####handles initialization
@@ -57,7 +106,7 @@ def initialization():               ####handles initialization
         r_vaule=input("r?\n--->")
         initial_x=input("x0?\n--->")
         iterations=input("iterations?\n--->")
-        vaules={"int,+,!=0,float,+,!=0":r_vaule,"int,+,!=0,float,+,!=0":initial_x,"int,+,!=0":iterations}
+        vaules={"1":r_vaule,"2":initial_x,"3":iterations}
         vaules_correct=check(vaules)
         if vaules_correct==False:
             recorrect(vaules)
@@ -74,21 +123,21 @@ def initialization():               ####handles initialization
 
 def check(arg_1):                   ####checks for the type and ranges correctness of input
     vaules=arg_1
-    for key in vaules:
-        if key=="int,+,!=0,float,+,!=0":
-            try:
-                a=float(vaules[key])
-                if a<=0:
-                    return(False)
-            except:
-                return(False)
-        elif key=="int,+,!=0":
-            try:
-                a=int(vaules[key])
-                if a<=0:
-                    return(False)
-            except:
-                return(False)
+    try:
+        a=vaules["1"]
+        b=vaules["2"]
+        c=vaules["3"]
+        a=float(a)
+        if a<=0:
+            return(False)
+        b=float(b)
+        if b<=0:
+            return(False)
+        c=int(c)
+        if c<=0:
+            return(False)
+    except:
+        return(False)
     return(True)
 
 
@@ -96,40 +145,33 @@ def check(arg_1):                   ####checks for the type and ranges correctne
 def recorrect(arg_1):                   ####if check()==False this function will output needed corrections to console
     vaules=arg_1
     correct={}
-    i=0
-    vaules=arg_1
-    for key in vaules:
-        if key=="int,+,!=0,float,+,!=0":
-            try:
-                a=float(vaules[key])
-                if a<=0:
-                    correct[i]=False
-                else:
-                    correct[i]=True
-            except:
-                correct[i]=False
-        elif key=="int,+,!=0":
-            try:
-                a=int(vaules[key])
-                if a<=0:
-                    correct[i]=False
-                else:
-                    correct[i]=True
-            except:
-                correct[i]=False
-    return(True)
-    for key in correct:
-        if correct[key]!=True:
-            if key=="1":
-                print("r_vaule")
-            elif key=="2":
-                print("inital_x")
-            elif key=="3":
-                print("iterations")
+    a=vaules["1"]
+    b=vaules["2"]
+    c=vaules["3"]
+    try:
+        a=float(a)
+        if a<=0:
+            print("R vaule must not be negative or zero.")
+    except:
+        print("R vaule must be a nonegative, non zero float/int.")
+    try:
+        b=float(b)
+        if b<=0:
+            print("Initial x vaule must not be negative or zero.")
+    except:
+        print("Initial x vaule must be a nonegative, non zero float/int.")
+    try:
+        c=int(c)
+        if c<=0:
+            print("Iterations must not be negative or zero.")
+    except:
+        print("Iterations must be a nonegative non zero int.")
+
 
 
 
 def calc(arg_1):                        ####handles iterating x
+    print("Calculations started.")
     vaules=arg_1
     r=vaules["r_vaule"]
     x0=vaules["initial_x"]
@@ -139,7 +181,9 @@ def calc(arg_1):                        ####handles iterating x
     result={"0":x0}
     while i<iterations:
         i=i+1
+        print("Iteration "+str(i))
         x=calc_step(r,x)
+        print("X="+str(x))
         result[str(i)]=x
     return(result)
 
@@ -173,18 +217,13 @@ def store_data(arg_1):                  ####if one wants to dump results
     print("results "+str(results))
     print("variables "+str(variables))
     data={"input":variables,"results":results}
-    file_name=handle_input("file name get",0)
+    file_name=handle_input("file name get dump",0)
     file=open(file_name,"w")
     file.write(str(data))
     file.close()
     print("Data stored at "+file_name+".")
     
     
- 
-
-def get_file_name_load():
-    
-
 
 
 def get_file_name_dump():           ####get file name
